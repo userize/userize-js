@@ -1,4 +1,4 @@
-import { add } from "../src";
+import { add } from "src";
 
 describe("Sample 'add' function test", () => {
   it("should add two numbers", () => {
