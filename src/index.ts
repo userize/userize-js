@@ -1,5 +1,7 @@
-function add(a: number, b: number): number {
-  return a + b;
-}
+import UsertiseClient from "./UsertiseClient";
 
-export { add };
+const usertise = new UsertiseClient();
+
+export const addCallback = usertise.addCallback.bind(usertise);
+export const removeCallback = usertise.removeCallback.bind(usertise);
+export const hasCallback = usertise.hasCallback.bind(usertise);
