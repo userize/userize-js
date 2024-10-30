@@ -1,29 +1,35 @@
-import { addCallback, hasCallback, removeCallback } from "src";
+import { initClient, registerAction, hasAction, clearAction } from "src";
 
-describe("Sample 'add' function test", () => {
+describe("Test UsertiseClient interface and methods", () => {
   it("should not have a callback", () => {
-    const result = hasCallback("event");
+    const result = hasAction("event");
     expect(result).toBe(false);
   });
 
   it("should have a callback", () => {
-    addCallback("event", () => {});
-    const result = hasCallback("event");
+    registerAction("event", () => {});
+    const result = hasAction("event");
     expect(result).toBe(true);
   });
 
   it("should not have a callback on a different event", () => {
-    addCallback("event1", () => {});
-    const result = hasCallback("event2");
+    registerAction("event1", () => {});
+    const result = hasAction("event2");
     expect(result).toBe(false);
   });
 
   it("should not have a callback after removing it", () => {
-    addCallback("event", () => {});
-    const resultAdd = hasCallback("event");
+    registerAction("event", () => {});
+    const resultAdd = hasAction("event");
     expect(resultAdd).toBe(true);
-    removeCallback("event");
-    const resultRemove = hasCallback("event");
+    clearAction("event");
+    const resultRemove = hasAction("event");
     expect(resultRemove).toBe(false);
+  });
+
+  it("should have a callback set by init", () => {
+    initClient(undefined, { callbacks: { event: () => {} } });
+    const result = hasAction("event");
+    expect(result).toBe(true);
   });
 });

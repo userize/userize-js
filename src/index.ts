@@ -2,6 +2,15 @@ import UsertiseClient from "./UsertiseClient";
 
 const usertise = new UsertiseClient();
 
-export const addCallback = usertise.addCallback.bind(usertise);
-export const removeCallback = usertise.removeCallback.bind(usertise);
-export const hasCallback = usertise.hasCallback.bind(usertise);
+export function initClient(
+  apiKey?: UsertiseClientOptions["apiKey"],
+  options?: Omit<UsertiseClientOptions, "apiKey">,
+) {
+  usertise.setOptions({ ...options, apiKey });
+  return usertise;
+}
+export const registerAction = usertise.on.bind(usertise);
+export const clearAction = usertise.clear.bind(usertise);
+export const hasAction = usertise.handles.bind(usertise);
+
+export const query = usertise.query.bind(usertise);
