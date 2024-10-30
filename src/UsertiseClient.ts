@@ -65,7 +65,7 @@ export default class UsertiseClient {
   async react(query: string) {
     const apiKey = this.getApiKey();
 
-    return this.reactProxy(query, this.resolveApiPath("/query"), {
+    return this.reactProxy(query, this.resolveApiPath("/react"), {
       "x-api-key": apiKey,
     });
   }
