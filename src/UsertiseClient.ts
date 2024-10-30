@@ -54,22 +54,46 @@ export default class UsertiseClient {
     return this.callbacks[event] !== undefined;
   }
 
-  async query(text: string) {
+  /**
+   * React to a given user query.
+   *
+   * Fetch the actions that should be triggered, based on
+   * user request, and run them in a cascade fashion.
+   *
+   * @param query - The user query.
+   */
+  async react(query: string) {
     const apiKey = this.getApiKey();
 
-    return this.queryProxy(text, this.resolveApiPath("/query"), {
+    return this.reactProxy(query, this.resolveApiPath("/query"), {
       "x-api-key": apiKey,
     });
   }
 
-  async queryProxy(text: string, url: string | URL, headers?: HeadersInit) {
+  /**
+   * React to a given user query.
+   *
+   * Fetch the actions that should be triggered, based on
+   * user request, and run them in a cascade fashion.
+   *
+   * @param query - The user query.
+   * @param url - URL to API endpoint.
+   * @param headers - Optional headers to send with the request.
+   */
+  async reactProxy(query: string, url: string | URL, headers?: HeadersInit) {
+    // Prepare body
+    const body = {
+      query,
+      filter: Object.keys(this.callbacks),
+    };
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         ...headers,
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify(body),
     });
 
     // Handle response

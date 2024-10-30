@@ -9,8 +9,10 @@ export function initClient(
   usertise.setOptions({ ...options, apiKey });
   return usertise;
 }
+
 export const registerAction = usertise.on.bind(usertise);
 export const clearAction = usertise.clear.bind(usertise);
 export const hasAction = usertise.handles.bind(usertise);
 
-export const query = usertise.query.bind(usertise);
+export const handleRequest = usertise.react.bind(usertise);
+export const handleRequestWithProxy = usertise.reactProxy.bind(usertise);
