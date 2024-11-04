@@ -11,10 +11,10 @@ export async function dispatchActions(
   // Prepare initial data
   const cascade = initActionCascade(response);
 
-  for (let [actionIdx, actionInfo] of response.actionsCascade.entries()) {
+  for (let [actionIdx, actionInfo] of response.actions.entries()) {
     // Set next event
     cascade.event.idx = actionIdx;
-    cascade.event.next = response.actionsCascade[actionIdx + 1]?.event ?? null;
+    cascade.event.next = response.actions[actionIdx + 1]?.event ?? null;
 
     // Run action callback
     const action: UsertiseAction | undefined = actions[actionInfo.event];
@@ -42,7 +42,7 @@ function initActionCascade(
   return {
     event: {
       idx: 0,
-      length: fromResponse?.actionsCascade.length ?? 0,
+      length: fromResponse?.actions.length ?? 0,
       prev: null,
       next: null,
     },

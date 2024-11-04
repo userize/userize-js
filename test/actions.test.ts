@@ -3,7 +3,7 @@ import { dispatchActions } from "src/actions";
 describe("Test actions triggering", () => {
   it("should not do anything with no callbacks", async () => {
     const result = await dispatchActions(
-      { input: "any text", actionsCascade: [] },
+      { query: "any text", actions: [] },
       {},
     );
     expect(result).toBe(undefined);
@@ -13,7 +13,7 @@ describe("Test actions triggering", () => {
     let testVar = 1;
 
     const result = await dispatchActions(
-      { input: "any text", actionsCascade: [] },
+      { query: "any text", actions: [] },
       {
         event: () => {
           testVar = 2;
@@ -31,7 +31,7 @@ describe("Test actions triggering", () => {
     let testVar = 1;
 
     const result = await dispatchActions(
-      { input: "any text", actionsCascade: [{ event: "event", params: {} }] },
+      { query: "any text", actions: [{ event: "event", params: {} }] },
       {
         event: () => {
           testVar = 2;
@@ -50,8 +50,8 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
-        input: "any text",
-        actionsCascade: [{ event: "event", params: { multiplyBy: 10 } }],
+        query: "any text",
+        actions: [{ event: "event", params: { multiplyBy: 10 } }],
       },
       {
         event: (_, multiplyBy) => {
@@ -72,8 +72,8 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
-        input: "any text",
-        actionsCascade: [
+        query: "any text",
+        actions: [
           { event: "event", params: { multiplyBy: 10 } },
           { event: "anotherEvent", params: { multiplyBy: 30 } },
         ],
@@ -97,8 +97,8 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
-        input: "any text",
-        actionsCascade: [
+        query: "any text",
+        actions: [
           { event: "event", params: {} },
           { event: "anotherEvent", params: {} },
         ],
@@ -122,8 +122,8 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
-        input: "any text",
-        actionsCascade: [
+        query: "any text",
+        actions: [
           { event: "event", params: { multiplyBy: 10 } },
           { event: "anotherEvent", params: { multiplyBy: 30 } },
         ],

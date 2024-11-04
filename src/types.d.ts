@@ -3,7 +3,7 @@ interface UsertiseClientOptions {
   callbacks?: { [key: string]: UsertiseAction };
 }
 
-// TODO: may return a promise, or Usertise cascade input
+// TODO: use generics to better type args
 type UsertiseAction = (
   cascade: UsertiseActionCascade,
   ...args: any[]
@@ -25,8 +25,8 @@ type UsertiseActionParam =
   | undefined;
 
 interface UsertiseActionResponse {
-  input: string;
-  actionsCascade: {
+  query: string;
+  actions: {
     event: string;
     params: { [key: string]: UsertiseActionParam };
   }[];
