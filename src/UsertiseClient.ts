@@ -1,4 +1,9 @@
 import { dispatchActions } from "./actions";
+import {
+  UsertiseAction,
+  UsertiseActionMap,
+  UsertiseClientOptions,
+} from "./types";
 
 export default class UsertiseClient {
   readonly apiUrl: string = "https://api.usertise.com";

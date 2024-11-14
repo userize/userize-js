@@ -1,3 +1,4 @@
+import { UsertiseClientOptions } from "./types";
 import UsertiseClient from "./UsertiseClient";
 
 const usertise = new UsertiseClient();
