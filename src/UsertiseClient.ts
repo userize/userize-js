@@ -1,5 +1,5 @@
 import { dispatchActions } from "./actions";
-import {
+import type {
   UsertiseAction,
   UsertiseActionMap,
   UsertiseClientOptions,
