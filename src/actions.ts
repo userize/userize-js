@@ -1,10 +1,10 @@
 import type {
-  UsertiseAction,
-  UsertiseActionCascade,
-  UsertiseActionCascadeData,
-  UsertiseActionMap,
-  UsertiseActionParam,
-  UsertiseActionResponse,
+  UserizeAction,
+  UserizeActionCascade,
+  UserizeActionCascadeData,
+  UserizeActionMap,
+  UserizeActionParam,
+  UserizeActionResponse,
 } from "types/actions";
 
 /**
@@ -14,8 +14,8 @@ import type {
  * @param actions - Available action callbacks.
  */
 export async function dispatchActions(
-  response: UsertiseActionResponse,
-  actions: UsertiseActionMap,
+  response: UserizeActionResponse,
+  actions: UserizeActionMap,
 ) {
   // Prepare initial data
   const cascade = initActionCascade(response);
@@ -26,7 +26,7 @@ export async function dispatchActions(
     cascade.event.next = response.actions[actionIdx + 1]?.action ?? null;
 
     // Run action callback
-    const action: UsertiseAction | undefined = actions[actionInfo.action];
+    const action: UserizeAction | undefined = actions[actionInfo.action];
     if (!action) {
       // Set previous event as undefined since action is not found
       cascade.event.prev = undefined;
@@ -46,8 +46,8 @@ export async function dispatchActions(
  * @returns Default action cascade.
  */
 function initActionCascade(
-  fromResponse?: UsertiseActionResponse,
-): UsertiseActionCascade {
+  fromResponse?: UserizeActionResponse,
+): UserizeActionCascade {
   return {
     event: {
       idx: 0,
@@ -68,10 +68,10 @@ function initActionCascade(
  * @returns Optional data to pass to the next action.
  */
 async function triggerAction(
-  action: UsertiseAction,
-  cascade: UsertiseActionCascade,
-  params: { [key: string]: UsertiseActionParam },
-): Promise<UsertiseActionCascadeData | null> {
+  action: UserizeAction,
+  cascade: UserizeActionCascade,
+  params: { [key: string]: UserizeActionParam },
+): Promise<UserizeActionCascadeData | null> {
   const res = await action(cascade, ...Object.values(params));
 
   return res ?? null;

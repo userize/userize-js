@@ -1,22 +1,22 @@
-import type { UsertiseClientOptions } from "types/actions";
-import UsertiseClient from "./UsertiseClient";
+import type { UserizeClientOptions } from "types/actions";
+import UserizeClient from "./UserizeClient";
 
-const usertise = new UsertiseClient();
+const userize = new UserizeClient();
 
 export function initClient(
-  apiKey?: UsertiseClientOptions["apiKey"],
-  options?: Omit<UsertiseClientOptions, "apiKey">,
+  apiKey?: UserizeClientOptions["apiKey"],
+  options?: Omit<UserizeClientOptions, "apiKey">,
 ) {
-  usertise.setOptions({ ...options, apiKey });
-  return usertise;
+  userize.setOptions({ ...options, apiKey });
+  return userize;
 }
 
-export const registerAction = usertise.on.bind(usertise);
-export const clearAction = usertise.clear.bind(usertise);
-export const hasAction = usertise.handles.bind(usertise);
+export const registerAction = userize.on.bind(userize);
+export const clearAction = userize.clear.bind(userize);
+export const hasAction = userize.handles.bind(userize);
 
-export const handleRequest = usertise.react.bind(usertise);
-export const handleRequestWithProxy = usertise.reactProxy.bind(usertise);
+export const handleRequest = userize.react.bind(userize);
+export const handleRequestWithProxy = userize.reactProxy.bind(userize);
 
 // Make public types available
 // Do not remove!

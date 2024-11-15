@@ -1,19 +1,19 @@
-export interface UsertiseClientOptions {
+export interface UserizeClientOptions {
   apiKey?: string;
-  callbacks?: { [key: string]: UsertiseAction };
+  callbacks?: { [key: string]: UserizeAction };
 }
 
 // TODO: use generics to better type args
-export type UsertiseAction = (
-  cascade: UsertiseActionCascade,
+export type UserizeAction = (
+  cascade: UserizeActionCascade,
   ...args: any[]
-) => UsertiseActionCascadeData | Promise<UsertiseActionCascadeData> | void;
+) => UserizeActionCascadeData | Promise<UserizeActionCascadeData> | void;
 
-export interface UsertiseActionMap {
-  [key: string]: UsertiseAction;
+export interface UserizeActionMap {
+  [key: string]: UserizeAction;
 }
 
-export type UsertiseActionParam =
+export type UserizeActionParam =
   | string
   | number
   | boolean
@@ -24,7 +24,7 @@ export type UsertiseActionParam =
   | Date[]
   | undefined;
 
-export interface UsertiseActionResponse {
+export interface UserizeActionResponse {
   query: string;
   actions: {
     // action name
@@ -49,7 +49,7 @@ export interface UsertiseActionResponse {
   }[];
 }
 
-export interface UsertiseActionCascade {
+export interface UserizeActionCascade {
   // event cascade info
   event: {
     // current event index in the cascade
@@ -66,7 +66,7 @@ export interface UsertiseActionCascade {
   };
 
   // optional data to pass to next event
-  data: UsertiseActionCascadeData;
+  data: UserizeActionCascadeData;
 }
 
-export type UsertiseActionCascadeData = any;
+export type UserizeActionCascadeData = any;

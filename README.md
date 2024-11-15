@@ -1,2 +1,3 @@
-# usertise-js
-Package to interface with Usertise API
+# userize-js
+
+Package to interface with Userize API

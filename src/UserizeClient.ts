@@ -1,21 +1,21 @@
 import { dispatchActions } from "./actions";
 import type {
-  UsertiseAction,
-  UsertiseActionMap,
-  UsertiseClientOptions,
+  UserizeAction,
+  UserizeActionMap,
+  UserizeClientOptions,
 } from "types/actions";
 
-export default class UsertiseClient {
-  readonly apiUrl: string = "https://api.usertise.com";
+export default class UserizeClient {
+  readonly apiUrl: string = "https://api.userize.com";
   readonly apiVersion: string = "v1";
-  private apiKey: string | undefined = process.env.USERTISE_API_KEY;
-  private callbacks: UsertiseActionMap = {};
+  private apiKey: string | undefined = process.env.USERIZE_API_KEY;
+  private callbacks: UserizeActionMap = {};
 
-  constructor(options?: UsertiseClientOptions) {
+  constructor(options?: UserizeClientOptions) {
     if (options) this.setOptions(options);
   }
 
-  setOptions(options: UsertiseClientOptions) {
+  setOptions(options: UserizeClientOptions) {
     if (options.apiKey != undefined) this.apiKey = options.apiKey;
     if (options.callbacks != undefined)
       this.callbacks = options.callbacks || {};
@@ -37,7 +37,7 @@ export default class UsertiseClient {
    * @param event - The event name.
    * @param callback - Callback function.
    */
-  on(event: string, callback: UsertiseAction) {
+  on(event: string, callback: UserizeAction) {
     this.callbacks[event] = callback;
   }
 

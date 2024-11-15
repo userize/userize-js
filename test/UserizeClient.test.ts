@@ -1,6 +1,6 @@
 import { initClient, registerAction, hasAction, clearAction } from "src";
 
-describe("Test UsertiseClient interface and methods", () => {
+describe("Test UserizeClient interface and methods", () => {
   it("should not have a callback", () => {
     const result = hasAction("event");
     expect(result).toBe(false);
