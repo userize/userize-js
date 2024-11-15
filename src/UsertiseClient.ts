@@ -8,7 +8,7 @@ import type {
 export default class UsertiseClient {
   readonly apiUrl: string = "https://api.usertise.com";
   readonly apiVersion: string = "v1";
-  private apiKey: string | undefined;
+  private apiKey: string | undefined = process.env.USERTISE_API_KEY;
   private callbacks: UsertiseActionMap = {};
 
   constructor(options?: UsertiseClientOptions) {
@@ -16,8 +16,9 @@ export default class UsertiseClient {
   }
 
   setOptions(options: UsertiseClientOptions) {
-    this.apiKey = options.apiKey;
-    this.callbacks = options.callbacks || {};
+    if (options.apiKey != undefined) this.apiKey = options.apiKey;
+    if (options.callbacks != undefined)
+      this.callbacks = options.callbacks || {};
   }
 
   private resolveApiPath(urlPath: string) {
