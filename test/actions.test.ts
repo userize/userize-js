@@ -31,7 +31,10 @@ describe("Test actions triggering", () => {
     let testVar = 1;
 
     const result = await dispatchActions(
-      { query: "any text", actions: [{ event: "event", params: {} }] },
+      {
+        query: "any text",
+        actions: [{ action: "event", params: {}, index: 0 }],
+      },
       {
         event: () => {
           testVar = 2;
@@ -51,7 +54,7 @@ describe("Test actions triggering", () => {
     const result = await dispatchActions(
       {
         query: "any text",
-        actions: [{ event: "event", params: { multiplyBy: 10 } }],
+        actions: [{ action: "event", params: { multiplyBy: 10 }, index: 0 }],
       },
       {
         event: (_, multiplyBy) => {
@@ -74,8 +77,8 @@ describe("Test actions triggering", () => {
       {
         query: "any text",
         actions: [
-          { event: "event", params: { multiplyBy: 10 } },
-          { event: "anotherEvent", params: { multiplyBy: 30 } },
+          { action: "event", params: { multiplyBy: 10 }, index: 0 },
+          { action: "anotherEvent", params: { multiplyBy: 30 }, index: 1 },
         ],
       },
       {
@@ -99,8 +102,8 @@ describe("Test actions triggering", () => {
       {
         query: "any text",
         actions: [
-          { event: "event", params: {} },
-          { event: "anotherEvent", params: {} },
+          { action: "event", params: {}, index: 0 },
+          { action: "anotherEvent", params: {}, index: 1 },
         ],
       },
       {
@@ -124,8 +127,8 @@ describe("Test actions triggering", () => {
       {
         query: "any text",
         actions: [
-          { event: "event", params: { multiplyBy: 10 } },
-          { event: "anotherEvent", params: { multiplyBy: 30 } },
+          { action: "event", params: { multiplyBy: 10 }, index: 0 },
+          { action: "anotherEvent", params: { multiplyBy: 30 }, index: 1 },
         ],
       },
       {
