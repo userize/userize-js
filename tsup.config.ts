@@ -8,5 +8,5 @@ export default defineConfig({
   treeshake: true,
   sourcemap: false,
   clean: true, // Clean output folder
-  minify: true,
+  minify: false,
 });
