@@ -5,7 +5,7 @@ import type {
   UsertiseActionMap,
   UsertiseActionParam,
   UsertiseActionResponse,
-} from "./types";
+} from "types/actions";
 
 /**
  * Dispatch API response to selected actions.
@@ -23,10 +23,10 @@ export async function dispatchActions(
   for (let [actionIdx, actionInfo] of response.actions.entries()) {
     // Set next event
     cascade.event.idx = actionIdx;
-    cascade.event.next = response.actions[actionIdx + 1]?.event ?? null;
+    cascade.event.next = response.actions[actionIdx + 1]?.action ?? null;
 
     // Run action callback
-    const action: UsertiseAction | undefined = actions[actionInfo.event];
+    const action: UsertiseAction | undefined = actions[actionInfo.action];
     if (!action) {
       // Set previous event as undefined since action is not found
       cascade.event.prev = undefined;
@@ -34,7 +34,7 @@ export async function dispatchActions(
       cascade.data = await triggerAction(action, cascade, actionInfo.params);
 
       // Set previous event
-      cascade.event.prev = actionInfo.event;
+      cascade.event.prev = actionInfo.action;
     }
   }
 }

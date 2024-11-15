@@ -3,7 +3,7 @@ import type {
   UsertiseAction,
   UsertiseActionMap,
   UsertiseClientOptions,
-} from "./types";
+} from "types/actions";
 
 export default class UsertiseClient {
   readonly apiUrl: string = "https://api.usertise.com";

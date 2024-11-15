@@ -27,8 +27,25 @@ export type UsertiseActionParam =
 export interface UsertiseActionResponse {
   query: string;
   actions: {
-    event: string;
-    params: { [key: string]: UsertiseActionParam };
+    // action name
+    action: ApiActionSingleConfig["name"];
+
+    // action parameters
+    params: {
+      [name: string]:
+        | string
+        | number
+        | boolean
+        | Date
+        | string[]
+        | number[]
+        | boolean[]
+        | Date[]
+        | undefined;
+    };
+
+    // index of the trigger in the list
+    index: number;
   }[];
 }
 
