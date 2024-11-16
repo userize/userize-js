@@ -1,15 +1,12 @@
 import { dispatchActions } from "./actions";
-import type {
-  UserizeAction,
-  UserizeActionMap,
-  UserizeClientOptions,
-} from "types/actions";
+import type { UserizeAction, UserizeActionMap } from "types/actions";
+import type { UserizeClientOptions } from "types/client";
 
 export default class UserizeClient {
   readonly apiUrl: string = "https://api.userize.com";
   readonly apiVersion: string = "v1";
   private apiKey: string | undefined = process.env.USERIZE_API_KEY;
-  private callbacks: UserizeActionMap = {};
+  private actionCallbacks: UserizeActionMap = {};
 
   constructor(options?: UserizeClientOptions) {
     if (options) this.setOptions(options);
@@ -17,8 +14,8 @@ export default class UserizeClient {
 
   setOptions(options: UserizeClientOptions) {
     if (options.apiKey != undefined) this.apiKey = options.apiKey;
-    if (options.callbacks != undefined)
-      this.callbacks = options.callbacks || {};
+    if (options.actions != undefined)
+      this.actionCallbacks = options.actions || {};
   }
 
   private resolveApiPath(urlPath: string) {
@@ -38,7 +35,7 @@ export default class UserizeClient {
    * @param callback - Callback function.
    */
   on(event: string, callback: UserizeAction) {
-    this.callbacks[event] = callback;
+    this.actionCallbacks[event] = callback;
   }
 
   /**
@@ -47,7 +44,7 @@ export default class UserizeClient {
    * @param event - The event name.
    */
   clear(event: string) {
-    delete this.callbacks[event];
+    delete this.actionCallbacks[event];
   }
 
   /**
@@ -57,7 +54,7 @@ export default class UserizeClient {
    * @returns True if there exists a callback associated with the event.
    */
   handles(event: string) {
-    return this.callbacks[event] !== undefined;
+    return this.actionCallbacks[event] !== undefined;
   }
 
   /**
@@ -90,7 +87,7 @@ export default class UserizeClient {
     // Prepare body
     const body = {
       query,
-      filter: Object.keys(this.callbacks),
+      filter: Object.keys(this.actionCallbacks),
     };
 
     const response = await fetch(url, {
@@ -103,6 +100,6 @@ export default class UserizeClient {
     });
 
     // Handle response
-    dispatchActions(await response.json(), this.callbacks);
+    dispatchActions(await response.json(), this.actionCallbacks);
   }
 }

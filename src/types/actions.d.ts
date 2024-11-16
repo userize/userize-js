@@ -1,18 +1,16 @@
-export interface UserizeClientOptions {
-  apiKey?: string;
-  callbacks?: { [key: string]: UserizeAction };
-}
+import { UserizeActionMethodConfig } from "types/actionsConfig";
 
-// TODO: use generics to better type args
+/**
+ * Action method, triggered by actions API.
+ */
 export type UserizeAction = (
   cascade: UserizeActionCascade,
-  ...args: any[]
+  ...params: any[] // TODO: use generics to better type params
 ) => UserizeActionCascadeData | Promise<UserizeActionCascadeData> | void;
 
-export interface UserizeActionMap {
-  [key: string]: UserizeAction;
-}
-
+/**
+ * Generic action parameter type.
+ */
 export type UserizeActionParam =
   | string
   | number
@@ -24,49 +22,81 @@ export type UserizeActionParam =
   | Date[]
   | undefined;
 
+/**
+ * Actions callbacks named map.
+ */
+export interface UserizeActionMap {
+  [key: string]: UserizeAction;
+}
+
+/**
+ * Actions API response interface.
+ */
 export interface UserizeActionResponse {
+  /**
+   * Original user query.
+   */
   query: string;
+
+  /**
+   * List of actions that should be triggered.
+   */
   actions: {
-    // action name
-    action: ApiActionSingleConfig["name"];
+    /**
+     * Action name.
+     */
+    action: UserizeActionMethodConfig["name"];
 
-    // action parameters
-    params: {
-      [name: string]:
-        | string
-        | number
-        | boolean
-        | Date
-        | string[]
-        | number[]
-        | boolean[]
-        | Date[]
-        | undefined;
-    };
+    /**
+     * Action parameters.
+     */
+    params: { [name: string]: UserizeActionParam };
 
-    // index of the trigger in the list
+    /**
+     * Index of the action in the list.
+     */
     index: number;
   }[];
 }
 
+/**
+ * Action cascade info, supplied as first argument
+ * to action callbacks.
+ */
 export interface UserizeActionCascade {
-  // event cascade info
+  /**
+   * Event cascade info.
+   */
   event: {
-    // current event index in the cascade
+    /**
+     * Current event index in the cascade.
+     */
     idx: number;
 
-    // total number of events in the cascade
+    /**
+     * Total number of events in the cascade.
+     */
     length: number;
 
-    // previous event name, null if first event, undefined if previous event's action was not found
+    /**
+     * Previous event name. Is null for first event,
+     * undefined if previous event's action was not found.
+     */
     prev: string | null | undefined;
 
-    // next event name, null if last event
+    /**
+     * Next event name. Is null for last event.
+     */
     next: string | null;
   };
 
-  // optional data to pass to next event
+  /**
+   * Optional custom data to pass to next event.
+   */
   data: UserizeActionCascadeData;
 }
 
+/**
+ * Data to pass from one action to the next.
+ */
 export type UserizeActionCascadeData = any;

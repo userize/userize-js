@@ -28,7 +28,7 @@ describe("Test UserizeClient interface and methods", () => {
   });
 
   it("should have a callback set by init", () => {
-    initClient(undefined, { callbacks: { event: () => {} } });
+    initClient(undefined, { actions: { event: () => {} } });
     const result = hasAction("event");
     expect(result).toBe(true);
   });

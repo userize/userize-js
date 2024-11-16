@@ -1,4 +1,4 @@
-import type { UserizeClientOptions } from "types/actions";
+import type { UserizeClientOptions } from "types/client";
 import UserizeClient from "./UserizeClient";
 
 const userize = new UserizeClient();
