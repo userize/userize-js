@@ -1,3 +1,1 @@
-# userize-js
-
-Package to interface with Userize API
+# `userize-js` - The official package to easily integrate Userize in your app
