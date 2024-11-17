@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["../src", "./"],
+  "noEmit": true // Prevent output of compiled files
+}
