@@ -1,7 +1,15 @@
 {
   "name": "userize-js",
   "version": "0.0.1",
-  "description": "Userize Javascript",
+  "description": "JavaScript client library for Userize",
+  "keywords": [
+    "userize",
+    "javascript",
+    "typescript",
+    "api",
+    "llm",
+    "ai"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
