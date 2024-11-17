@@ -15,8 +15,8 @@ export const registerAction = userize.actionOn.bind(userize);
 export const clearAction = userize.actionClear.bind(userize);
 export const hasAction = userize.hasAction.bind(userize);
 
-export const actionsTrigger = userize.actionsQuery.bind(userize);
-export const actionsTriggerWithProxy = userize.actionsQueryProxy.bind(userize);
+export const triggerActions = userize.actionsQuery.bind(userize);
+export const triggerActionsWithProxy = userize.actionsQueryProxy.bind(userize);
 
 // Make public types available
 // Do not remove!
