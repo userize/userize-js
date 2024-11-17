@@ -1,0 +1,32 @@
+# Test package on new pull request.
+
+name: Test package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test_package:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ["16.x", "18.x", "20.x", "22.x"]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: run tests
+        run: yarn test
