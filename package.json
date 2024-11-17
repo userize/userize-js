@@ -14,9 +14,17 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "LICENSE.md",
+    "README.md",
+    "package.json",
+    "tsconfig.json"
+  ],
   "license": "MIT",
   "scripts": {
-    "build": "tsup --minify",
+    "build": "tsup",
     "dev": "tsup --watch",
     "test": "jest",
     "test:watch": "jest --watch"
