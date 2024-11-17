@@ -11,12 +11,12 @@ export function initClient(
   return userize;
 }
 
-export const registerAction = userize.on.bind(userize);
-export const clearAction = userize.clear.bind(userize);
-export const hasAction = userize.handles.bind(userize);
+export const registerAction = userize.actionOn.bind(userize);
+export const clearAction = userize.actionClear.bind(userize);
+export const hasAction = userize.hasAction.bind(userize);
 
-export const handleRequest = userize.react.bind(userize);
-export const handleRequestWithProxy = userize.reactProxy.bind(userize);
+export const actionsTrigger = userize.actionsQuery.bind(userize);
+export const actionsTriggerWithProxy = userize.actionsQueryProxy.bind(userize);
 
 // Make public types available
 // Do not remove!
