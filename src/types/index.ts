@@ -2,7 +2,11 @@
 // thus only export types that should be importable by package users
 
 export type { UserizeClientOptions } from "types/client";
-export type { UserizeActionCascade } from "types/actions";
+export type {
+  UserizeActionCascade,
+  UserizeActionRequest,
+  UserizeActionResponse,
+} from "types/actions";
 export type {
   UserizeActionConfig,
   UserizeActionMethodConfig,

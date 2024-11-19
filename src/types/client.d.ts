@@ -1,4 +1,4 @@
-import type { UserizeAction } from "types/actions";
+import type { UserizeAction, UserizeActionUtilityMap } from "types/actions";
 
 /**
  * Options for the Userize client.
@@ -16,4 +16,25 @@ export interface UserizeClientOptions {
    * or registered individually.
    */
   actions?: { [key: string]: UserizeAction };
+
+  /**
+   * Action callback that will run before the cascade.
+   */
+  beforeActions?: UserizeActionUtilityMap["before"];
+
+  /**
+   * Action callback that will run after the cascade.
+   */
+  afterActions?: UserizeActionUtilityMap["after"];
+
+  /**
+   * Action callback to run when there are no actions to run,
+   * that is when selected actions are not useful to the user's query.
+   */
+  actionOnEmpty?: UserizeActionUtilityMap["empty"];
+
+  /**
+   * Action callback to run in case of error.
+   */
+  actionOnError?: UserizeActionUtilityMap["error"];
 }
