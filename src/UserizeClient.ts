@@ -2,6 +2,7 @@ import { dispatchActions } from "./actions";
 import type {
   UserizeAction,
   UserizeActionMap,
+  UserizeActionRequest,
   UserizeActionUtilityMap,
 } from "types/actions";
 import type { UserizeClientOptions } from "types/client";
@@ -109,9 +110,9 @@ export default class UserizeClient {
     const apiKey = this.getApiKey();
 
     // Prepare body and headers
-    const reqBody = {
+    const reqBody: UserizeActionRequest = {
       query,
-      filter: Object.keys(this.actionCallbacks),
+      includeActions: Object.keys(this.actionCallbacks),
     };
     const reqHeaders: HeadersInit = {
       "Content-Type": "application/json",
