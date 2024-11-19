@@ -1,5 +1,9 @@
 import { dispatchActions } from "./actions";
-import type { UserizeAction, UserizeActionMap } from "types/actions";
+import type {
+  UserizeAction,
+  UserizeActionMap,
+  UserizeActionUtilityMap,
+} from "types/actions";
 import type { UserizeClientOptions } from "types/client";
 
 export default class UserizeClient {
@@ -7,6 +11,7 @@ export default class UserizeClient {
   readonly apiVersion: string = "v1";
   private apiKey: string | undefined = process.env.USERIZE_API_KEY;
   private actionCallbacks: UserizeActionMap = {};
+  private actionCallbacksUtils: UserizeActionUtilityMap = {};
 
   constructor(options?: UserizeClientOptions) {
     if (options) this.setOptions(options);
@@ -16,6 +21,16 @@ export default class UserizeClient {
     if (options.apiKey != undefined) this.apiKey = options.apiKey;
     if (options.actions != undefined)
       this.actionCallbacks = options.actions || {};
+
+    // Set utility callbacks
+    if (options.beforeActions != undefined)
+      this.actionCallbacksUtils.before = options.beforeActions;
+    if (options.afterActions != undefined)
+      this.actionCallbacksUtils.after = options.afterActions;
+    if (options.actionOnEmpty != undefined)
+      this.actionCallbacksUtils.empty = options.actionOnEmpty;
+    if (options.actionOnError != undefined)
+      this.actionCallbacksUtils.error = options.actionOnError;
   }
 
   private resolveApiPath(urlPath: string) {
@@ -112,6 +127,8 @@ export default class UserizeClient {
     });
 
     // Handle response
-    dispatchActions(await response.json(), this.actionCallbacks);
+    dispatchActions(await response.json(), this.actionCallbacks, {
+      actionUtils: this.actionCallbacksUtils,
+    });
   }
 }
