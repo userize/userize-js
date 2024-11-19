@@ -3,7 +3,7 @@ import type { UserizeAction, UserizeActionMap } from "types/actions";
 import type { UserizeClientOptions } from "types/client";
 
 export default class UserizeClient {
-  readonly apiUrl: string = "https://api.userize.com";
+  readonly apiUrl: string = "https://api.userize.it";
   readonly apiVersion: string = "v1";
   private apiKey: string | undefined = process.env.USERIZE_API_KEY;
   private actionCallbacks: UserizeActionMap = {};
