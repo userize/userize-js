@@ -30,6 +30,44 @@ export interface UserizeActionMap {
 }
 
 /**
+ * Utility actions callbacks named map.
+ *
+ * Utility actions are:
+ * - before: triggered before any other action.
+ * - after: triggered at the end of the action cascade.
+ * - empty: triggered when there is no action to run in response of a query.
+ * - error: triggered in case of error.
+ */
+export interface UserizeActionUtilityMap {
+  before?: UserizeAction;
+  after?: UserizeAction;
+  empty?: UserizeAction;
+  error?: UserizeAction;
+}
+
+export interface UserizeActionRequest {
+  /**
+   * User query.
+   */
+  query: string;
+
+  /**
+   * List of actions to include.
+   */
+  includeActions?: string[];
+
+  /**
+   * List of actions to exclude (take precedence over include).
+   */
+  excludeActions?: string[];
+
+  /**
+   * Optional user's timezone to refine results based on datetime.
+   */
+  timezone?: string;
+}
+
+/**
  * Actions API response interface.
  */
 export interface UserizeActionResponse {
@@ -41,22 +79,29 @@ export interface UserizeActionResponse {
   /**
    * List of actions that should be triggered.
    */
-  actions: {
-    /**
-     * Action name.
-     */
-    action: UserizeActionMethodConfig["name"];
+  actions:
+    | {
+        /**
+         * Action name.
+         */
+        action: UserizeActionMethodConfig["name"];
 
-    /**
-     * Action parameters.
-     */
-    params: { [name: string]: UserizeActionParam };
+        /**
+         * Action parameters.
+         */
+        params: { [name: string]: UserizeActionParam };
 
-    /**
-     * Index of the action in the list.
-     */
-    index: number;
-  }[];
+        /**
+         * Index of the action in the list.
+         */
+        index: number;
+      }[]
+    | null;
+
+  /**
+   * Error message, if any.
+   */
+  errorMessage: string | null;
 }
 
 /**
