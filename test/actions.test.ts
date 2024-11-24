@@ -33,7 +33,7 @@ describe("Test actions triggering", () => {
     const result = await dispatchActions(
       {
         query: "any text",
-        actions: [{ action: "event", params: {}, index: 0 }],
+        actions: [{ action: "event", params: [], index: 0 }],
         errorMessage: null,
       },
       {
@@ -55,7 +55,13 @@ describe("Test actions triggering", () => {
     const result = await dispatchActions(
       {
         query: "any text",
-        actions: [{ action: "event", params: { multiplyBy: 10 }, index: 0 }],
+        actions: [
+          {
+            action: "event",
+            params: [{ name: "multiplyBy", value: 10, order: 0 }],
+            index: 0,
+          },
+        ],
         errorMessage: null,
       },
       {
@@ -79,8 +85,16 @@ describe("Test actions triggering", () => {
       {
         query: "any text",
         actions: [
-          { action: "event", params: { multiplyBy: 10 }, index: 0 },
-          { action: "anotherEvent", params: { multiplyBy: 30 }, index: 1 },
+          {
+            action: "event",
+            params: [{ name: "multiplyBy", value: 10, order: 0 }],
+            index: 0,
+          },
+          {
+            action: "anotherEvent",
+            params: [{ name: "multiplyBy", value: 30, order: 0 }],
+            index: 1,
+          },
         ],
         errorMessage: null,
       },
@@ -105,8 +119,8 @@ describe("Test actions triggering", () => {
       {
         query: "any text",
         actions: [
-          { action: "event", params: {}, index: 0 },
-          { action: "anotherEvent", params: {}, index: 1 },
+          { action: "event", params: [], index: 0 },
+          { action: "anotherEvent", params: [], index: 1 },
         ],
         errorMessage: null,
       },
@@ -131,8 +145,16 @@ describe("Test actions triggering", () => {
       {
         query: "any text",
         actions: [
-          { action: "event", params: { multiplyBy: 10 }, index: 0 },
-          { action: "anotherEvent", params: { multiplyBy: 30 }, index: 1 },
+          {
+            action: "event",
+            params: [{ name: "multiplyBy", value: 10, order: 0 }],
+            index: 0,
+          },
+          {
+            action: "anotherEvent",
+            params: [{ name: "multiplyBy", value: 30, order: 0 }],
+            index: 1,
+          },
         ],
         errorMessage: null,
       },
@@ -158,9 +180,21 @@ describe("Test actions triggering", () => {
       {
         query: "any text",
         actions: [
-          { action: "event1", params: { add: 5 }, index: 2 },
-          { action: "event2", params: { subtract: 3 }, index: 0 },
-          { action: "event3", params: { multiply: 2 }, index: 1 },
+          {
+            action: "event1",
+            params: [{ name: "add", value: 5, order: 0 }],
+            index: 2,
+          },
+          {
+            action: "event2",
+            params: [{ name: "subtract", value: 3, order: 0 }],
+            index: 0,
+          },
+          {
+            action: "event3",
+            params: [{ name: "multiply", value: 2, order: 0 }],
+            index: 1,
+          },
         ],
         errorMessage: null,
       },
