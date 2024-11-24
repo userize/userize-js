@@ -26,21 +26,25 @@ export async function dispatchActions(
   // Run error action, if needed
   if (!response.actions) {
     if (actionUtils?.error)
-      await triggerAction(actionUtils.error, cascade, {
-        errorMessage: response.errorMessage ?? undefined,
-      });
+      await triggerAction(actionUtils.error, cascade, [
+        {
+          name: "errorMessage",
+          value: response.errorMessage ?? null,
+          order: 0,
+        },
+      ]);
     return;
   }
 
   // Run action cascade with before/after callbacks
 
-  if (actionUtils?.before) await triggerAction(actionUtils.before, cascade, {});
+  if (actionUtils?.before) await triggerAction(actionUtils.before, cascade, []);
 
   if (response.actions.length === 0) {
-    if (actionUtils?.empty) await triggerAction(actionUtils.empty, cascade, {});
+    if (actionUtils?.empty) await triggerAction(actionUtils.empty, cascade, []);
   } else await runActionCascade(response.actions, actions, cascade);
 
-  if (actionUtils?.after) await triggerAction(actionUtils.after, cascade, {});
+  if (actionUtils?.after) await triggerAction(actionUtils.after, cascade, []);
 }
 
 /**
@@ -109,9 +113,12 @@ async function runActionCascade(
 async function triggerAction(
   action: UserizeAction,
   cascade: UserizeActionCascade,
-  params: { [key: string]: UserizeActionParam },
+  params: NonNullable<UserizeActionResponse["actions"]>[number]["params"],
 ): Promise<UserizeActionCascadeData | null> {
-  const res = await action(cascade, ...Object.values(params));
+  const paramValues: UserizeActionParam[] = params
+    .sort((a, b) => a.order - b.order)
+    .map((p) => p.value);
+  const res = await action(cascade, ...paramValues);
 
   // Update cascade data
   cascade.data = res;

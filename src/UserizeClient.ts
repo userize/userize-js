@@ -3,6 +3,7 @@ import type {
   UserizeAction,
   UserizeActionMap,
   UserizeActionRequest,
+  UserizeActionResponse,
   UserizeActionUtilityMap,
 } from "types/actions";
 import type { UserizeClientOptions } from "types/client";
@@ -127,8 +128,20 @@ export default class UserizeClient {
       body: JSON.stringify(reqBody),
     });
 
+    // Get response body
+    let responseBody: UserizeActionResponse;
+    try {
+      responseBody = await response.json();
+    } catch (error) {
+      responseBody = {
+        query,
+        actions: null,
+        errorMessage: `API response status: ${response.status}. ${response.statusText}`,
+      };
+    }
+
     // Handle response
-    dispatchActions(await response.json(), this.actionCallbacks, {
+    dispatchActions(responseBody, this.actionCallbacks, {
       actionUtils: this.actionCallbacksUtils,
     });
   }

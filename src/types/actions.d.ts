@@ -20,7 +20,7 @@ export type UserizeActionParam =
   | number[]
   | boolean[]
   | Date[]
-  | undefined;
+  | null;
 
 /**
  * Actions callbacks named map.
@@ -89,7 +89,7 @@ export interface UserizeActionResponse {
         /**
          * Action parameters.
          */
-        params: { [name: string]: UserizeActionParam };
+        params: { name: string; value: UserizeActionParam; order: number }[];
 
         /**
          * Index of the action in the list.
