@@ -1,17 +1,20 @@
 import { dispatchActions } from "./actions";
+import { API_ACTIONS_QUERY_PATH, queryActionApi } from "./actionsApi";
 import type {
   UserizeAction,
   UserizeActionMap,
   UserizeActionRequest,
-  UserizeActionResponse,
   UserizeActionUtilityMap,
 } from "types/actions";
 import type { UserizeClientOptions } from "types/client";
 
 export default class UserizeClient {
+  // API values
   readonly apiUrl: string = "https://api.userize.it";
   readonly apiVersion: string = "v1";
-  private apiKey: string | undefined = process.env.USERIZE_API_KEY;
+  private apiKey: string | null = process.env.USERIZE_API_KEY ?? null;
+
+  // Actions
   private actionCallbacks: UserizeActionMap = {};
   private actionCallbacksUtils: UserizeActionUtilityMap = {};
 
@@ -19,22 +22,33 @@ export default class UserizeClient {
     if (options) this.setOptions(options);
   }
 
+  /**
+   * Set the client options.
+   *
+   * @param options - Client options.
+   */
   setOptions(options: UserizeClientOptions) {
-    if (options.apiKey != undefined) this.apiKey = options.apiKey;
-    if (options.actions != undefined)
+    if (options.apiKey !== undefined) this.apiKey = options.apiKey;
+    if (options.actions !== undefined)
       this.actionCallbacks = options.actions || {};
 
     // Set utility callbacks
-    if (options.beforeActions != undefined)
-      this.actionCallbacksUtils.before = options.beforeActions;
-    if (options.afterActions != undefined)
-      this.actionCallbacksUtils.after = options.afterActions;
-    if (options.actionOnEmpty != undefined)
-      this.actionCallbacksUtils.empty = options.actionOnEmpty;
-    if (options.actionOnError != undefined)
-      this.actionCallbacksUtils.error = options.actionOnError;
+    if (options.beforeActions !== undefined)
+      this.actionCallbacksUtils.before = options.beforeActions ?? undefined;
+    if (options.afterActions !== undefined)
+      this.actionCallbacksUtils.after = options.afterActions ?? undefined;
+    if (options.actionOnEmpty !== undefined)
+      this.actionCallbacksUtils.empty = options.actionOnEmpty ?? undefined;
+    if (options.actionOnError !== undefined)
+      this.actionCallbacksUtils.error = options.actionOnError ?? undefined;
   }
 
+  /**
+   * Convert a relative URL path to an absolute API path.
+   *
+   * @param urlPath - Relative URL path.
+   * @returns Absolute API path.
+   */
   private resolveApiPath(urlPath: string) {
     const cleanUrlPath = urlPath.replace(/^\//, "");
     return `${this.apiUrl}/${this.apiVersion}/${cleanUrlPath}`;
@@ -52,32 +66,32 @@ export default class UserizeClient {
   }
 
   /**
-   * Register an action for an event.
+   * Register a named action that can be triggered.
    *
-   * @param event - The event name.
+   * @param name - The action name.
    * @param callback - Action callback.
    */
-  actionOn(event: string, callback: UserizeAction) {
-    this.actionCallbacks[event] = callback;
+  actionSet(name: string, callback: UserizeAction) {
+    this.actionCallbacks[name] = callback;
   }
 
   /**
-   * Remove any action associated with an event.
+   * Remove any action associated to a name.
    *
-   * @param event - The event name.
+   * @param name - The action name.
    */
-  actionClear(event: string) {
-    delete this.actionCallbacks[event];
+  actionClear(name: string) {
+    delete this.actionCallbacks[name];
   }
 
   /**
-   * Check if there is an action callback associated with an event.
+   * Check if there exists an action with given name.
    *
-   * @param event - The event name.
-   * @returns True if there exists an action associated with the event.
+   * @param name - The action name.
+   * @returns True if there exists an action with given name, false otherwise.
    */
-  hasAction(event: string) {
-    return this.actionCallbacks[event] !== undefined;
+  hasAction(name: string) {
+    return this.actionCallbacks[name] !== undefined;
   }
 
   /**
@@ -89,7 +103,10 @@ export default class UserizeClient {
    * @param query - The user query.
    */
   async actionsQuery(query: string) {
-    return this.actionsQueryProxy(query, this.resolveApiPath("/actions/query"));
+    return this.actionsQueryProxy(
+      query,
+      this.resolveApiPath(API_ACTIONS_QUERY_PATH),
+    );
   }
 
   /**
@@ -121,27 +138,10 @@ export default class UserizeClient {
       ...headers,
     };
 
-    // API call
-    const response = await fetch(url, {
-      method: "POST",
-      headers: reqHeaders,
-      body: JSON.stringify(reqBody),
-    });
+    // Call API and handle response
+    const response = await queryActionApi(url, reqHeaders, reqBody);
 
-    // Get response body
-    let responseBody: UserizeActionResponse;
-    try {
-      responseBody = await response.json();
-    } catch (error) {
-      responseBody = {
-        query,
-        actions: null,
-        errorMessage: `API response status: ${response.status}. ${response.statusText}`,
-      };
-    }
-
-    // Handle response
-    dispatchActions(responseBody, this.actionCallbacks, {
+    dispatchActions(response, this.actionCallbacks, {
       actionUtils: this.actionCallbacksUtils,
     });
   }
