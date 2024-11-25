@@ -9,9 +9,12 @@ import type {
 import type { UserizeClientOptions } from "types/client";
 
 export default class UserizeClient {
+  // API values
   readonly apiUrl: string = "https://api.userize.it";
   readonly apiVersion: string = "v1";
-  private apiKey: string | undefined = process.env.USERIZE_API_KEY;
+  private apiKey: string | null = process.env.USERIZE_API_KEY ?? null;
+
+  // Actions
   private actionCallbacks: UserizeActionMap = {};
   private actionCallbacksUtils: UserizeActionUtilityMap = {};
 
@@ -20,19 +23,19 @@ export default class UserizeClient {
   }
 
   setOptions(options: UserizeClientOptions) {
-    if (options.apiKey != undefined) this.apiKey = options.apiKey;
-    if (options.actions != undefined)
+    if (options.apiKey !== undefined) this.apiKey = options.apiKey;
+    if (options.actions !== undefined)
       this.actionCallbacks = options.actions || {};
 
     // Set utility callbacks
-    if (options.beforeActions != undefined)
-      this.actionCallbacksUtils.before = options.beforeActions;
-    if (options.afterActions != undefined)
-      this.actionCallbacksUtils.after = options.afterActions;
-    if (options.actionOnEmpty != undefined)
-      this.actionCallbacksUtils.empty = options.actionOnEmpty;
-    if (options.actionOnError != undefined)
-      this.actionCallbacksUtils.error = options.actionOnError;
+    if (options.beforeActions !== undefined)
+      this.actionCallbacksUtils.before = options.beforeActions ?? undefined;
+    if (options.afterActions !== undefined)
+      this.actionCallbacksUtils.after = options.afterActions ?? undefined;
+    if (options.actionOnEmpty !== undefined)
+      this.actionCallbacksUtils.empty = options.actionOnEmpty ?? undefined;
+    if (options.actionOnError !== undefined)
+      this.actionCallbacksUtils.error = options.actionOnError ?? undefined;
   }
 
   private resolveApiPath(urlPath: string) {
