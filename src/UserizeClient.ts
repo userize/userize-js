@@ -1,9 +1,9 @@
 import { dispatchActions } from "./actions";
+import { API_ACTIONS_QUERY_PATH, queryActionApi } from "./actionsApi";
 import type {
   UserizeAction,
   UserizeActionMap,
   UserizeActionRequest,
-  UserizeActionResponse,
   UserizeActionUtilityMap,
 } from "types/actions";
 import type { UserizeClientOptions } from "types/client";
@@ -103,7 +103,10 @@ export default class UserizeClient {
    * @param query - The user query.
    */
   async actionsQuery(query: string) {
-    return this.actionsQueryProxy(query, this.resolveApiPath("/actions/query"));
+    return this.actionsQueryProxy(
+      query,
+      this.resolveApiPath(API_ACTIONS_QUERY_PATH),
+    );
   }
 
   /**
@@ -135,27 +138,10 @@ export default class UserizeClient {
       ...headers,
     };
 
-    // API call
-    const response = await fetch(url, {
-      method: "POST",
-      headers: reqHeaders,
-      body: JSON.stringify(reqBody),
-    });
+    // Call API and handle response
+    const response = await queryActionApi(url, reqHeaders, reqBody);
 
-    // Get response body
-    let responseBody: UserizeActionResponse;
-    try {
-      responseBody = await response.json();
-    } catch (error) {
-      responseBody = {
-        query,
-        actions: null,
-        errorMessage: `API response status: ${response.status}. ${response.statusText}`,
-      };
-    }
-
-    // Handle response
-    dispatchActions(responseBody, this.actionCallbacks, {
+    dispatchActions(response, this.actionCallbacks, {
       actionUtils: this.actionCallbacksUtils,
     });
   }
