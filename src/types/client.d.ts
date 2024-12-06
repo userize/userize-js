@@ -37,4 +37,9 @@ export interface UserizeClientOptions {
    * Action callback to run in case of error.
    */
   actionOnError?: UserizeActionUtilityMap["error"] | null;
+
+  /**
+   * Require named parameters instead of positional arguments.
+   */
+  namedParams?: boolean;
 }

@@ -13,15 +13,20 @@ import type {
  *
  * @param response - API response.
  * @param actions - Available action callbacks.
- * @param actionUtils - Action utility callbacks.
+ * @param options - Additional options:
+ * - actionUtils - Action utility callbacks.
+ * - namedParams - Use named parameters instead of positional parameters.
  */
 export async function dispatchActions(
   response: UserizeActionResponse,
   actions: UserizeActionMap,
-  { actionUtils }: { actionUtils?: UserizeActionUtilityMap } = {},
+  {
+    actionUtils,
+    namedParams = false,
+  }: { actionUtils?: UserizeActionUtilityMap; namedParams?: boolean } = {},
 ) {
   // Prepare initial data
-  const cascade = initActionCascade(response);
+  const cascade = initActionCascade(response, { options: { namedParams } });
 
   // Run error action, if needed
   if (!response.actions) {
@@ -55,6 +60,7 @@ export async function dispatchActions(
  */
 function initActionCascade(
   fromResponse?: UserizeActionResponse,
+  baseCascade?: Partial<UserizeActionCascade>,
 ): UserizeActionCascade {
   return {
     event: {
@@ -62,6 +68,9 @@ function initActionCascade(
       length: fromResponse?.actions?.length ?? 0,
       prev: null,
       next: null,
+    },
+    options: {
+      namedParams: baseCascade?.options?.namedParams ?? false,
     },
     data: null,
   };
@@ -114,14 +123,26 @@ async function triggerAction(
   action: UserizeAction,
   cascade: UserizeActionCascade,
   params: NonNullable<UserizeActionResponse["actions"]>[number]["params"],
-): Promise<UserizeActionCascadeData | null> {
-  const paramValues: UserizeActionParam[] = params
-    .sort((a, b) => a.order - b.order)
-    .map((p) => p.value);
-  const res = await action(cascade, ...paramValues);
+): Promise<UserizeActionCascadeData> {
+  // Make sure cascade doesn't get overridden
+  const { data: _, ...cascadeObj } = cascade;
+  const cascadeCopy = JSON.parse(JSON.stringify(cascadeObj));
 
-  // Update cascade data
-  cascade.data = res;
+  // Trigger the action
+  let ret: UserizeActionCascadeData = undefined;
+  if (cascade.options.namedParams) {
+    const paramObj = Object.fromEntries(params.map((p) => [p.name, p.value]));
+    ret = await action(cascade, paramObj);
+  } else {
+    const paramValues: UserizeActionParam[] = params
+      .sort((a, b) => a.order - b.order)
+      .map((p) => p.value);
+    ret = await action(cascade, ...paramValues);
+  }
 
-  return res;
+  // Update cascade data (only)
+  Object.assign(cascade, cascadeCopy);
+  cascade.data = ret;
+
+  return ret;
 }
