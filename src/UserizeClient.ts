@@ -18,6 +18,10 @@ export default class UserizeClient {
   private actionCallbacks: UserizeActionMap = {};
   private actionCallbacksUtils: UserizeActionUtilityMap = {};
 
+  // Additional action options
+  private actionOptions: { namedParams?: UserizeClientOptions["namedParams"] } =
+    {};
+
   constructor(options?: UserizeClientOptions) {
     if (options) this.setOptions(options);
   }
@@ -41,6 +45,10 @@ export default class UserizeClient {
       this.actionCallbacksUtils.empty = options.actionOnEmpty ?? undefined;
     if (options.actionOnError !== undefined)
       this.actionCallbacksUtils.error = options.actionOnError ?? undefined;
+
+    // Set additional options
+    if (options.namedParams !== undefined)
+      this.actionOptions.namedParams = options.namedParams;
   }
 
   /**
@@ -143,6 +151,7 @@ export default class UserizeClient {
 
     dispatchActions(response, this.actionCallbacks, {
       actionUtils: this.actionCallbacksUtils,
+      ...this.actionOptions,
     });
   }
 }

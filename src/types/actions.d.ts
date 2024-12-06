@@ -136,6 +136,17 @@ export interface UserizeActionCascade {
   };
 
   /**
+   * Options that are governing the action cascade.
+   */
+  options: {
+    /**
+     * If true, action parameters are supplied as key-value pairs.
+     * Otherwise, they are supplied as positional arguments.
+     */
+    namedParams: boolean;
+  };
+
+  /**
    * Optional custom data to pass to next event.
    */
   data: UserizeActionCascadeData;
