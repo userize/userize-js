@@ -213,6 +213,37 @@ describe("Test actions triggering", () => {
     expect(testVar).toBe(9);
   });
 
+  it("should run action with named parameters", async () => {
+    let testVar = 5;
+
+    await dispatchActions(
+      {
+        query: "any text",
+        actions: [
+          {
+            action: "event",
+            params: [
+              { name: "add", value: 5, order: 0 },
+              { name: "subtract", value: 2, order: 1 },
+              { name: "multiply", value: 3, order: 2 },
+            ],
+            index: 2,
+          },
+        ],
+        errorMessage: null,
+      },
+      {
+        event: (_, { subtract, add, multiply }) => {
+          testVar += add;
+          testVar *= multiply;
+          testVar -= subtract;
+        },
+      },
+      { namedParams: true },
+    );
+    expect(testVar).toBe(28);
+  });
+
   it("should run fallback method if no action is found", async () => {
     let testVar = 1;
 
