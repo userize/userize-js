@@ -31,17 +31,21 @@ export async function queryActionApi(
   }
 
   // Perform the call to API
-  const apiResponse = await fetch(url, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(request),
-  });
-
-  // Get response body
   try {
-    response = await apiResponse.json();
+    const apiResponse = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(request),
+    });
+
+    // Get response body
+    try {
+      response = await apiResponse.json();
+    } catch (error) {
+      response.errorMessage = `API response status: ${apiResponse.status}. ${apiResponse.statusText}`;
+    }
   } catch (error) {
-    response.errorMessage = `API response status: ${apiResponse.status}. ${apiResponse.statusText}`;
+    response.errorMessage = `API error: ${error}`;
   }
 
   return response;
