@@ -16,6 +16,16 @@ const userize = new UserizeClient();
 export const initClient = userize.init.bind(userize);
 
 /**
+ * Set the client options.
+ *
+ * NOTE: Any undefined option will be ignored, keeping the option as it is.
+ *       To force option to fallback to default value, use `null` instead.
+ *
+ * @param options - Client options.
+ */
+export const setOptions = userize.setOptions.bind(userize);
+
+/**
  * Register a named action that can be triggered.
  *
  * @param name - The action name.
