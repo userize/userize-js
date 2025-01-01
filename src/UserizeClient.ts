@@ -22,8 +22,31 @@ export default class UserizeClient {
   private actionOptions: { namedParams?: UserizeClientOptions["namedParams"] } =
     {};
 
-  constructor(options?: UserizeClientOptions) {
+  constructor(apiKey?: string | null, options?: UserizeClientOptions) {
+    this.init(apiKey, options);
+  }
+
+  /**
+   * Initialize the Userize client.
+   *
+   * @param apiKey - The API key to use.
+   * @param options - The client options.
+   * @returns The initialized Userize client.
+   */
+  init(apiKey?: string | null, options?: UserizeClientOptions) {
+    if (apiKey !== undefined) this.setApiKey(apiKey);
     if (options) this.setOptions(options);
+
+    return this;
+  }
+
+  /**
+   * Set the API key.
+   *
+   * @param apiKey - The API key.
+   */
+  setApiKey(apiKey: string | null) {
+    this.apiKey = apiKey;
   }
 
   /**
@@ -32,7 +55,6 @@ export default class UserizeClient {
    * @param options - Client options.
    */
   setOptions(options: UserizeClientOptions) {
-    if (options.apiKey !== undefined) this.apiKey = options.apiKey;
     if (options.actions !== undefined)
       this.actionCallbacks = options.actions || {};
 

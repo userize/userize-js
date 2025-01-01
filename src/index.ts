@@ -8,19 +8,22 @@ const userize = new UserizeClient();
  *
  * NOTE: Any undefined option will be ignored, keeping the option as it is.
  *       To force option to fallback to default value, use `null` instead.
- *       This holds for all options, including API key.
  *
- * @param apiKey - The API key. If not provided, process.env.USERIZE_API_KEY will be used.
+ * @param apiKey - The API key. If not provided, process.env.USERIZE_API_KEY will be used. Can be null when using a proxy API endpoint.
  * @param options - The client options.
  * @returns The initialized Userize client.
  */
-export function initClient(
-  apiKey?: UserizeClientOptions["apiKey"],
-  options?: Omit<UserizeClientOptions, "apiKey">,
-) {
-  userize.setOptions({ ...options, apiKey });
-  return userize;
-}
+export const initClient = userize.init.bind(userize);
+
+/**
+ * Set the client options.
+ *
+ * NOTE: Any undefined option will be ignored, keeping the option as it is.
+ *       To force option to fallback to default value, use `null` instead.
+ *
+ * @param options - Client options.
+ */
+export const setOptions = userize.setOptions.bind(userize);
 
 /**
  * Register a named action that can be triggered.
