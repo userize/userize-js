@@ -72,6 +72,13 @@ export interface UserizeActionRequest {
  */
 export interface UserizeActionResponse {
   /**
+   * Unique request/response id.
+   *
+   * Should not be trusted when an error occurs (i.e. `errorMessage` is set).
+   */
+  id: string;
+
+  /**
    * Original user query.
    */
   query: string;

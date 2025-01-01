@@ -19,6 +19,7 @@ export async function queryActionApi(
   request: UserizeActionRequest,
 ): Promise<UserizeActionResponse> {
   let response: UserizeActionResponse = {
+    id: "0", // dummy
     query: request.query,
     actions: null,
     errorMessage: null,

@@ -3,7 +3,7 @@ import { dispatchActions } from "src/actions";
 describe("Test actions triggering", () => {
   it("should not do anything with no callbacks", async () => {
     const result = await dispatchActions(
-      { query: "any text", actions: [], errorMessage: null },
+      { id: "0", query: "any text", actions: [], errorMessage: null },
       {},
     );
     expect(result).toBe(undefined);
@@ -13,7 +13,7 @@ describe("Test actions triggering", () => {
     let testVar = 1;
 
     const result = await dispatchActions(
-      { query: "any text", actions: [], errorMessage: null },
+      { id: "0", query: "any text", actions: [], errorMessage: null },
       {
         event: () => {
           testVar = 2;
@@ -32,6 +32,7 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
+        id: "0",
         query: "any text",
         actions: [{ action: "event", params: [], index: 0 }],
         errorMessage: null,
@@ -54,6 +55,7 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
+        id: "0",
         query: "any text",
         actions: [
           {
@@ -83,6 +85,7 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
+        id: "0",
         query: "any text",
         actions: [
           {
@@ -117,6 +120,7 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
+        id: "0",
         query: "any text",
         actions: [
           { action: "event", params: [], index: 0 },
@@ -143,6 +147,7 @@ describe("Test actions triggering", () => {
 
     const result = await dispatchActions(
       {
+        id: "0",
         query: "any text",
         actions: [
           {
@@ -178,6 +183,7 @@ describe("Test actions triggering", () => {
 
     await dispatchActions(
       {
+        id: "0",
         query: "any text",
         actions: [
           {
@@ -218,6 +224,7 @@ describe("Test actions triggering", () => {
 
     await dispatchActions(
       {
+        id: "0",
         query: "any text",
         actions: [
           {
@@ -248,7 +255,7 @@ describe("Test actions triggering", () => {
     let testVar = 1;
 
     await dispatchActions(
-      { query: "any text", actions: [], errorMessage: null },
+      { id: "0", query: "any text", actions: [], errorMessage: null },
       {
         event: ({ data }) => {
           return data * 2;
