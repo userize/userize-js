@@ -1,7 +1,12 @@
 import { dispatchActions } from "./actions";
-import { API_ACTIONS_QUERY_PATH, queryActionApi } from "./actionsApi";
+import {
+  API_ACTIONS_QUERY_PATH,
+  getContextFromRaw,
+  queryActionApi,
+} from "./actionsApi";
 import type {
   UserizeAction,
+  UserizeActionContextRaw,
   UserizeActionMap,
   UserizeActionRequest,
   UserizeActionUtilityMap,
@@ -131,11 +136,17 @@ export default class UserizeClient {
    * user request, and run them in a cascade fashion.
    *
    * @param query - The user query.
+   * @param context - Context data.
+   * @returns True if API call is successful, false if any error message is returned.
    */
-  async actionsQuery(query: string) {
+  async actionsQuery(
+    query: string,
+    context?: UserizeActionContextRaw,
+  ): Promise<boolean> {
     return this.actionsQueryProxy(
-      query,
       this.resolveApiPath(API_ACTIONS_QUERY_PATH),
+      query,
+      context,
     );
   }
 
@@ -145,21 +156,29 @@ export default class UserizeClient {
    * Fetch the actions that should be triggered, based on
    * user request, and run them in a cascade fashion.
    *
+   * @param proxy - URL to API endpoint, or object with proxy API connection info.
    * @param query - The user query.
-   * @param url - URL to API endpoint.
-   * @param headers - Optional headers to send with the request.
+   * @param context - Context data.
+   * @returns True if API call is successful, false if any error message is returned.
    */
   async actionsQueryProxy(
+    proxy: string | URL | { url: string | URL; headers?: HeadersInit },
     query: string,
-    url: string | URL,
-    headers?: HeadersInit,
-  ) {
+    context?: UserizeActionContextRaw,
+  ): Promise<boolean> {
     // Get api key
     const apiKey = this.getApiKey();
+
+    // Extract proxy info
+    const { url, headers } =
+      typeof proxy === "string" || proxy instanceof URL
+        ? { url: proxy }
+        : proxy;
 
     // Prepare body and headers
     const reqBody: UserizeActionRequest = {
       query,
+      ...(context ? { context: getContextFromRaw(context) } : {}),
       includeActions: Object.keys(this.actionCallbacks),
     };
     const reqHeaders: HeadersInit = {
@@ -175,5 +194,7 @@ export default class UserizeClient {
       actionUtils: this.actionCallbacksUtils,
       ...this.actionOptions,
     });
+
+    return response.errorMessage === null;
   }
 }

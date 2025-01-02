@@ -53,6 +53,8 @@ export const hasAction = userize.hasAction.bind(userize);
  * user request, and run them in a cascade fashion.
  *
  * @param query - The user query.
+ * @param context - Context data.
+ * @returns True if API call is successful, false if any error message is returned.
  */
 export const triggerActions = userize.actionsQuery.bind(userize);
 /**
@@ -61,9 +63,10 @@ export const triggerActions = userize.actionsQuery.bind(userize);
  * Fetch the actions that should be triggered, based on
  * user request, and run them in a cascade fashion.
  *
+ * @param proxy - URL to API endpoint, or object with proxy API connection info.
  * @param query - The user query.
- * @param url - URL to API endpoint.
- * @param headers - Optional headers to send with the request.
+ * @param context - Context data.
+ * @returns True if API call is successful, false if any error message is returned.
  */
 export const triggerActionsWithProxy = userize.actionsQueryProxy.bind(userize);
 

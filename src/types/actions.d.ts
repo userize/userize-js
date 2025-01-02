@@ -45,11 +45,34 @@ export interface UserizeActionUtilityMap {
   error?: UserizeAction;
 }
 
+/**
+ * Raw context data.
+ *
+ * NOTE: Values must be JSON serializable.
+ *       Anything that cannot be converted to string
+ *       by `JSON.stringify()` will be discarded.
+ *
+ * For better results, keys should have a relevant name
+ * that describes the context data.
+ */
+export type UserizeActionContextRaw = Record<string, unknown>;
+
+/**
+ * Actions API request interface.
+ */
 export interface UserizeActionRequest {
   /**
    * User query.
    */
   query: string;
+
+  /**
+   * Online context data that can be used to refine results.
+   *
+   * Should be provided as key-value pairs like:
+   * `{ "relevant_key_name": "Natural language description" }`.
+   */
+  context?: Record<string, string>;
 
   /**
    * List of actions to include.
@@ -71,6 +94,13 @@ export interface UserizeActionRequest {
  * Actions API response interface.
  */
 export interface UserizeActionResponse {
+  /**
+   * Unique request/response id.
+   *
+   * Should not be trusted when an error occurs (i.e. `errorMessage` is set).
+   */
+  id: string;
+
   /**
    * Original user query.
    */

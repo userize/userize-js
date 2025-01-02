@@ -1,9 +1,32 @@
 import type {
+  UserizeActionContextRaw,
   UserizeActionRequest,
   UserizeActionResponse,
 } from "types/actions";
 
 export const API_ACTIONS_QUERY_PATH = "/actions/query";
+
+/**
+ * Convert raw context data to context for API call.
+ *
+ * @param contextRaw - Raw context data.
+ * @returns Context data for API call.
+ */
+export function getContextFromRaw(
+  contextRaw: UserizeActionContextRaw,
+): UserizeActionRequest["context"] {
+  const context: UserizeActionRequest["context"] = Object.fromEntries(
+    Object.entries(contextRaw).map(([key, value]) => {
+      try {
+        return [key, JSON.stringify(value)];
+      } catch (error) {
+        return [key, "<DATA UNAVAILABLE: CANNOT BE CONVERTED TO STRING>"];
+      }
+    }),
+  );
+
+  return context;
+}
 
 /**
  * Perform the API call to query actions.
@@ -19,6 +42,7 @@ export async function queryActionApi(
   request: UserizeActionRequest,
 ): Promise<UserizeActionResponse> {
   let response: UserizeActionResponse = {
+    id: "0", // dummy
     query: request.query,
     actions: null,
     errorMessage: null,
