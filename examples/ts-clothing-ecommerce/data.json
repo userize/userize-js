@@ -1,0 +1,37 @@
+[
+  {
+    "name": "jeans",
+    "color": "blue",
+    "price": 20,
+    "addedAt": "2024-08-12T00:00:00.000Z",
+    "lastBoughtAt": "2024-10-02T00:00:00.000Z"
+  },
+  {
+    "name": "tshirt",
+    "color": "red",
+    "price": 5,
+    "addedAt": "2024-09-02T00:00:00.000Z",
+    "lastBoughtAt": "2024-10-05T00:00:00.000Z"
+  },
+  {
+    "name": "dress",
+    "color": "black",
+    "price": 15,
+    "addedAt": "2024-08-15T00:00:00.000Z",
+    "lastBoughtAt": "2024-10-01T00:00:00.000Z"
+  },
+  {
+    "name": "pants",
+    "color": "blue",
+    "price": 10,
+    "addedAt": "2024-07-29T00:00:00.000Z",
+    "lastBoughtAt": "2024-09-24T00:00:00.000Z"
+  },
+  {
+    "name": "socks",
+    "color": "black",
+    "price": 2,
+    "addedAt": "2024-08-23T00:00:00.000Z",
+    "lastBoughtAt": "2024-10-08T00:00:00.000Z"
+  }
+]
